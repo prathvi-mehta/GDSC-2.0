@@ -14,6 +14,8 @@ const ScannerPage = () => {
   const canvasRef = useRef(null);
   const fileInputRef = useRef(null);
 
+  const url = "https://gdsc-2-0-backend.onrender.com";
+
   // Generate particles for background effect
   const particles = Array.from({ length: 15 }, (_, index) => ({
     id: index,
@@ -107,7 +109,7 @@ const ScannerPage = () => {
       console.log(`Sending ${imagesToAnalyze.length} images to the server for analysis...`);
       
       // Send to API endpoint
-      const response = await fetch('/api/analyze', {
+      const response = await fetch(`${url}/api/analyze`, {
         method: 'POST',
         body: formData,
       });
