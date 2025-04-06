@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import Navbar from '../Components/HomePageComponents/Nav';
+import Navbar from '../Components/HomePageComponents/nav';
 import Footer from '../Components/HomePageComponents/Footer';
 import { useAuth } from '../contexts/AuthContext';
 import Alert from '../Components/AuthComponents/Alert';

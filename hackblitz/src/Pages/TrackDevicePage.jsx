@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import Navbar from "../Components/HomePageComponents/Nav";
+import Navbar from "../Components/HomePageComponents/nav";
 import Footer from "../Components/HomePageComponents/Footer";
 import "./TrackDevicePage.css";
 
