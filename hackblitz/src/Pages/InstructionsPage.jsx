@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import Navbar from "../Components/HomePageComponents/Nav";
-import Footer from "../Components/HomePageComponents/Footer";
+import Navbar from "../Components/HomePageComponents/nav";
+import Footer from "../Components/HomePageComponents/footer";
 import "./InstructionsPage.css";
 
 const InstructionsPage = () => {
