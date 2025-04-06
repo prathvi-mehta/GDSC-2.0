@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import Navbar from "../Components/HomePageComponents/nav";
+import Navbar from "../Components/HomePageComponents/Nav";
 import Hero from "../Components/HomePageComponents/Hero";
 import About from "../Components/HomePageComponents/About";
 import Services from "../Components/HomePageComponents/Service";

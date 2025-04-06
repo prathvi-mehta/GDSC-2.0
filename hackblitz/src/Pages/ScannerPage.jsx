@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
-import Navbar from "../Components/HomePageComponents/nav";
+import Navbar from "../Components/HomePageComponents/Nav";
 import Footer from "../Components/HomePageComponents/Footer";
 import "./ScannerPage.css";
 
@@ -108,16 +108,31 @@ const ScannerPage = () => {
       
       console.log(`Sending ${imagesToAnalyze.length} images to the server for analysis...`);
       
-      // Send to API endpoint
+      // Send to API endpoint with explicit CORS settings
       const response = await fetch(`${url}/api/analyze`, {
         method: 'POST',
         body: formData,
+        // Don't set Content-Type header for FormData - browser sets it automatically with boundary
+        headers: {
+          // Including standard CORS headers
+          'Accept': 'application/json',
+        },
+        // Ensure credentials are included if needed (e.g., for cookies)
+        credentials: 'same-origin'
       });
       
       console.log('Server response status:', response.status);
       
       if (!response.ok) {
-        throw new Error(`API request failed with status ${response.status}`);
+        // Try to get more detailed error information
+        let errorDetail;
+        try {
+          const errorData = await response.json();
+          errorDetail = errorData.message || errorData.error || `Status: ${response.status}`;
+        } catch (e) {
+          errorDetail = `Status code: ${response.status}`;
+        }
+        throw new Error(`API request failed: ${errorDetail}`);
       }
       
       const data = await response.json();
@@ -137,7 +152,7 @@ const ScannerPage = () => {
     } catch (error) {
       console.error("Error analyzing images:", error);
       
-      // Show error message instead of mock data
+      // Show detailed error message
       setResult({
         status: "error",
         message: `Failed to analyze images: ${error.message || "Connection error"}. Please check your internet connection and try again.`
@@ -145,7 +160,7 @@ const ScannerPage = () => {
       
       // Stop the scanner if using camera
       if (scanning) {
-      stopScanner();
+        stopScanner();
       }
     } finally {
       setIsUploading(false);
@@ -302,389 +317,4 @@ const ScannerPage = () => {
                   {Array.from({ length: 5 }).map((_, i) => (
                     <i 
                       key={i} 
-                      className={`fas fa-circle ${i < (data.sustainability?.complexity_rating || 0) ? 'active' : ''}`}
-                    ></i>
-                  ))}
-                  <span className="rating-text">
-                    {data.sustainability?.complexity_rating === 1 ? 'Simple' : 
-                     data.sustainability?.complexity_rating === 5 ? 'Complex' : ''}
-                  </span>
-                </div>
-              </div>
-              
-              {data.sustainability?.environmental_impact && (
-                <div className="rating-item">
-                  <span className="rating-label">Environmental Impact:</span>
-                  <div className="rating-value">
-                    <span className="impact-score">{data.sustainability.environmental_impact.score}/10</span>
-                    <p className="impact-explanation">{data.sustainability.environmental_impact.explanation}</p>
-                  </div>
-                </div>
-              )}
-
-              {data.sustainability?.carbon_footprint_savings && (
-                <div className="carbon-savings">
-                  <i className="fas fa-leaf"></i>
-                  <span>{data.sustainability.carbon_footprint_savings}</span>
-                </div>
-              )}
-            </div>
-          </div>
-          
-          <div className="materials-section">
-            <h5>Recoverable Materials</h5>
-            {renderList(data.sustainability?.recyclable_components)}
-          </div>
-        </div>
-        
-        {/* Safety Information */}
-        <div className="result-card">
-          <div className="card-header">
-            <i className="fas fa-exclamation-triangle safety-icon"></i>
-            <h4>Safety Information</h4>
-          </div>
-          
-          <div className="safety-grid">
-            <div className="safety-column">
-              <h5>Hazardous Components</h5>
-              {renderList(data.safety?.hazardous_materials, "No hazardous components detected")}
-            </div>
-            
-            <div className="safety-column">
-              <h5>Health Risks</h5>
-              {renderList(data.safety?.health_risks, "No significant health risks identified")}
-            </div>
-          </div>
-          
-          <div className="handling-section">
-            <h5>Handling Precautions</h5>
-            {renderList(data.safety?.handling_instructions)}
-          </div>
-          
-          <div className="regulations-section">
-            <h5>Regulatory Requirements</h5>
-            {renderList(data.safety?.regulatory_requirements)}
-          </div>
-        </div>
-        
-        {/* Disposal Guidelines */}
-        <div className="result-card">
-          <div className="card-header">
-            <i className="fas fa-recycle disposal-icon"></i>
-            <h4>Disposal Guidelines</h4>
-          </div>
-          
-          {data.value?.recommended_methods && (
-            <div className="recommended-method">
-              <p><strong>Recommended Approach:</strong> {data.value.recommended_methods.join(', ')}</p>
-            </div>
-          )}
-          
-          <div className="disposal-section">
-            <h5>Required Tools</h5>
-            {renderList(data.disposal?.required_tools, "No special tools required")}
-          </div>
-          
-          <div className="disposal-section">
-            <h5>Disassembly Steps</h5>
-            {data.disposal?.preparation_steps && data.disposal.preparation_steps.length > 0 ? (
-              <ol className="steps-list">
-                {data.disposal.preparation_steps.map((step, index) => (
-                  <li key={index}>{step}</li>
-                ))}
-              </ol>
-            ) : (
-              <p className="empty-list">No disassembly steps provided</p>
-            )}
-          </div>
-          
-          <div className="certifications-section">
-            <h5>Recommended Certifications</h5>
-            {renderList(data.disposal?.certifications)}
-          </div>
-          
-          <div className="regional-section">
-            <h5>Regional Guidelines</h5>
-            <div className="region-tabs">
-              <div className="region-tab">
-                <h6><i className="fas fa-globe-europe"></i> European Union</h6>
-                <p>{data.disposal?.regional_guidelines?.EU || "Information not available"}</p>
-              </div>
-              <div className="region-tab">
-                <h6><i className="fas fa-flag-usa"></i> United States</h6>
-                <p>{data.disposal?.regional_guidelines?.US || "Information not available"}</p>
-              </div>
-              <div className="region-tab">
-                <h6><i className="fas fa-globe-asia"></i> Asia</h6>
-                <p>{data.disposal?.regional_guidelines?.Asia || "Information not available"}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        {/* Value Recovery */}
-        <div className="result-card">
-          <div className="card-header">
-            <i className="fas fa-gem value-icon"></i>
-            <h4>Resource Recovery Value</h4>
-            {data.value?.estimated_recycling_value && (
-              <div className="value-badge">
-                {data.value.estimated_recycling_value}
-              </div>
-            )}
-          </div>
-          
-          {/* Price Estimates Section */}
-          {data.value?.price_estimates && (
-            <div className="price-estimates-section">
-              <div className="price-table">
-                <div className="price-row">
-                  <div className="price-label">
-                    <i className="fas fa-recycle"></i>
-                    <span>Recycling Value:</span>
-                  </div>
-                  <div className="price-value">{data.value.price_estimates.recycling_value || "N/A"}</div>
-                </div>
-                <div className="price-row">
-                  <div className="price-label">
-                    <i className="fas fa-store"></i>
-                    <span>Resale Value:</span>
-                  </div>
-                  <div className="price-value">{data.value.price_estimates.resale_value || "N/A"}</div>
-                </div>
-                <div className="price-row">
-                  <div className="price-label">
-                    <i className="fas fa-coins"></i>
-                    <span>Raw Materials Value:</span>
-                  </div>
-                  <div className="price-value">{data.value.price_estimates.raw_materials_value || "N/A"}</div>
-                </div>
-              </div>
-            </div>
-          )}
-          
-          <div className="value-grid">
-            <div className="value-column">
-              <h5>Reusable Components</h5>
-              {renderList(data.value?.valuable_components)}
-            </div>
-            
-            <div className="value-column">
-              <h5>Valuable Materials</h5>
-              {renderList(data.value?.valuable_materials)}
-            </div>
-          </div>
-          
-          {data.value?.data_security_required && (
-            <div className="data-security-section">
-              <h5><i className="fas fa-shield-alt"></i> Data Security Required</h5>
-              <p>{data.value.data_wiping_procedure || "Standard data wiping procedures recommended."}</p>
-            </div>
-          )}
-        </div>
-
-        {/* Schedule Pickup Button */}
-        <div className="schedule-pickup-container">
-          <div className="pickup-promo">
-            <h3>Ready to Responsibly Recycle Your Device?</h3>
-            <p>Our team will pick up your e-waste and ensure it's recycled properly, following all safety guidelines.</p>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="schedule-btn"
-              onClick={navigateToSchedulePickup}
-            >
-              <i className="fas fa-truck"></i> Schedule a Pickup Today
-            </motion.button>
-          </div>
-        </div>
-      </div>
-    );
-  };
-
-  return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="scanner-container"
-    >
-      <Navbar />
-      
-      <div className="scanner-particles">
-        {particles.map((particle) => (
-          <motion.div
-            key={particle.id}
-            className="particle"
-            initial={{
-              x: `${particle.x}%`,
-              y: `${particle.y}%`,
-              opacity: Math.random() * 0.5 + 0.3,
-              scale: Math.random() * 0.6 + 0.5
-            }}
-            animate={{
-              y: [null, Math.random() * -100 - 50],
-              opacity: [null, 0]
-            }}
-            transition={{
-              duration: particle.duration,
-              repeat: Infinity,
-              ease: "linear"
-            }}
-            style={{
-              width: `${particle.size}px`,
-              height: `${particle.size}px`
-            }}
-          />
-        ))}
-      </div>
-      
-      <div className="scanner-content">
-        <motion.div
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.5 }}
-          className="scanner-box"
-        >
-          <h2>E-Waste Scanner</h2>
-          <p>Scan your electronic waste to identify recyclable components</p>
-          
-          <div className="scanner-view">
-            {scanning ? (
-              <>
-                <div className="video-container">
-                  <video 
-                    ref={videoRef} 
-                    autoPlay 
-                    playsInline
-                    onLoadedMetadata={() => {
-                      videoRef.current.play();
-                    }}
-                  />
-                  <div className="scan-overlay">
-                    <div className="scan-line"></div>
-                  </div>
-                </div>
-                <div className="scanner-controls">
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="capture-btn"
-                    onClick={captureImage}
-                  >
-                    <i className="fas fa-camera"></i> Capture
-                  </motion.button>
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="stop-btn"
-                    onClick={stopScanner}
-                  >
-                    <i className="fas fa-times"></i> Cancel
-                  </motion.button>
-                </div>
-              </>
-            ) : (
-              <div className="start-scan">
-                {result && result.status === "complete" ? (
-                  <>
-                    {renderResultData(result.data)}
-                    <motion.button
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="scan-btn"
-                      onClick={() => {
-                        setResult(null);
-                        startScanner();
-                      }}
-                    >
-                      <i className="fas fa-camera"></i> Scan Again
-                    </motion.button>
-                  </>
-                ) : result && result.status === "processing" ? (
-                  <div className="processing">
-                    <div className="spinner"></div>
-                    <p>Analyzing your e-waste...</p>
-                  </div>
-                ) : result && result.status === "error" ? (
-                  <div className="error-message">
-                    <i className="fas fa-exclamation-circle"></i>
-                    <p>{result.message}</p>
-                    <motion.button
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="retry-btn"
-                      onClick={() => {
-                        setResult(null);
-                      }}
-                    >
-                      <i className="fas fa-redo"></i> Try Again
-                    </motion.button>
-                  </div>
-                ) : (
-                  <>
-                    <div className="scanner-options">
-                      <motion.button
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        className="scan-btn"
-                        onClick={startScanner}
-                      >
-                        <i className="fas fa-camera"></i> Use Camera
-                      </motion.button>
-                      <span className="separator">or</span>
-                      <input 
-                        type="file" 
-                        ref={fileInputRef}
-                        style={{ display: 'none' }} 
-                        accept="image/*" 
-                        multiple 
-                        onChange={handleFileUpload}
-                      />
-                      <motion.button
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        className="upload-btn"
-                        onClick={handleBrowseClick}
-                      >
-                        <i className="fas fa-upload"></i> Upload Photos
-                      </motion.button>
-                    </div>
-                    
-                    {uploadedImages.length > 0 && (
-                      <div className="uploaded-preview">
-                        <p>{uploadedImages.length} image{uploadedImages.length > 1 ? 's' : ''} selected</p>
-                        <div className="thumbnail-container">
-                          {uploadedImages.map((file, index) => (
-                            <div key={index} className="thumbnail">
-                              <img src={URL.createObjectURL(file)} alt={`Uploaded ${index + 1}`} />
-                            </div>
-                          ))}
-                        </div>
-                        <motion.button
-                          whileHover={{ scale: 1.05 }}
-                          whileTap={{ scale: 0.95 }}
-                          className="analyze-btn"
-                          onClick={processUploadedImages}
-                          disabled={isUploading}
-                        >
-                          <i className="fas fa-search"></i> Analyze Images
-                        </motion.button>
-                      </div>
-                    )}
-                  </>
-                )}
-              </div>
-            )}
-          </div>
-        </motion.div>
-      </div>
-      
-      <canvas ref={canvasRef} style={{ display: 'none' }} />
-
-      <Footer />
-    </motion.div>
-  );
-};
-
-export default ScannerPage; 
+                      className={`fas fa-circle ${i < (data.sustainability?.complexity_rating || 0) ? 'active' : ''}`

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
 import { useLocation } from "react-router-dom";
-import Navbar from "../Components/HomePageComponents/nav";
+import Navbar from "../Components/HomePageComponents/Nav";
 import Footer from "../Components/HomePageComponents/Footer";
 import RecyclerListView from "../Components/DropPoints/RecyclerListView";
 import RecyclerMapView from "../Components/DropPoints/RecyclerMapView";

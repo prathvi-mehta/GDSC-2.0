@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";
-import Navbar from "../Components/HomePageComponents/nav";
+import Navbar from "../Components/HomePageComponents/Nav";
 import Footer from "../Components/HomePageComponents/Footer";
 import "./SchedulePickupPage.css";
 
