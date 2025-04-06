@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import Navbar from '../Components/HomePageComponents/nav';
-import Footer from '../Components/HomePageComponents/footer';
+import Navbar from '../Components/HomePageComponents/nav.jsx';
+import Footer from '../Components/HomePageComponents/footer.jsx';
 import { useAuth } from '../contexts/AuthContext';
-import Alert from '../Components/AuthComponents/Alert';
+import Alert from '../Components/AuthComponents/Alert.jsx';
 import './LoginPage.css'; // Reusing styles from login page
 
 const ForgotPasswordPage = () => {

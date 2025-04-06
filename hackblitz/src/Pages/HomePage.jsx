@@ -3,12 +3,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import Navbar from "../Components/HomePageComponents/nav";
-import Hero from "../Components/HomePageComponents/Hero";
-import About from "../Components/HomePageComponents/About";
-import Services from "../Components/HomePageComponents/Service";
-import Contact from "../Components/HomePageComponents/Contact";
-import Footer from "../Components/HomePageComponents/footer";
+import Navbar from "../Components/HomePageComponents/nav.jsx";
+import Hero from "../Components/HomePageComponents/Hero.jsx";
+import About from "../Components/HomePageComponents/About.jsx";
+import Services from "../Components/HomePageComponents/Service.jsx";
+import Contact from "../Components/HomePageComponents/Contact.jsx";
+import Footer from "../Components/HomePageComponents/footer.jsx";
 import "./HomePage.css";
 
 const HomePage = () => {

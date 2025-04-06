@@ -2,9 +2,9 @@ import React, { useEffect } from "react";
 import { motion } from "framer-motion";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import Navbar from "../Components/HomePageComponents/nav";
-import Footer from "../Components/HomePageComponents/footer";
 import "./AwarenessPage.css";
+import Navbar from "../Components/HomePageComponents/nav.jsx";
+import Footer from "../Components/HomePageComponents/footer.jsx";
 
 const AwarenessPage = () => {
   useEffect(() => {

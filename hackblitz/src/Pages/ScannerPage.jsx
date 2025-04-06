@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
-import Navbar from "../Components/HomePageComponents/nav";
-import Footer from "../Components/HomePageComponents/footer";
+import Navbar from "../Components/HomePageComponents/nav.jsx";
+import Footer from "../Components/HomePageComponents/footer.jsx";
 import "./ScannerPage.css";
 
 const ScannerPage = () => {

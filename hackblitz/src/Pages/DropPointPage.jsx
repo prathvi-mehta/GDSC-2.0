@@ -1,17 +1,18 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
 import { useLocation } from "react-router-dom";
-import Navbar from "../Components/HomePageComponents/nav";
-import Footer from "../Components/HomePageComponents/footer";
-import RecyclerListView from "../Components/DropPoints/RecyclerListView";
-import RecyclerMapView from "../Components/DropPoints/RecyclerMapView";
-import InfoSection from "../Components/DropPoints/InfoSection";
-import AlternativeOptions from "../Components/DropPoints/AlternativeOptions";
-import SearchBar from "../Components/DropPoints/SearchBar";
-import ViewTabs from "../Components/DropPoints/ViewTabs";
-import LocationStatus from "../Components/DropPoints/LocationStatus";
+import Navbar from "../Components/HomePageComponents/nav.jsx";
+import Footer from "../Components/HomePageComponents/footer.jsx";
+import RecyclerListView from "../Components/DropPoints/RecyclerListView.jsx";
+import RecyclerMapView from "../Components/DropPoints/RecyclerMapView.jsx";
+import InfoSection from "../Components/DropPoints/InfoSection.jsx";
+import AlternativeOptions from "../Components/DropPoints/AlternativeOptions.jsx";
+import SearchBar from "../Components/DropPoints/SearchBar.jsx";
+import ViewTabs from "../Components/DropPoints/ViewTabs.jsx";
+import LocationStatus from "../Components/DropPoints/LocationStatus.jsx";
 import { generateRandomLocations, defaultRecyclers } from "../utils/recyclerGenerator";
 import { getUserLocation } from "../utils/locationUtils";
+import { Helmet } from "react-helmet";
 import "./DropPointPage.css";
 
 const DropPointPage = () => {
