@@ -1,6 +1,0 @@
-services:
-  - type: web
-    name: gdsc-2.0
-    env: node
-    buildCommand: npm run build
-    staticPublishPath: "./dist"

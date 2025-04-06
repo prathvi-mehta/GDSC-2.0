@@ -6,8 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "postbuild": "echo '/* application/javascript' > dist/_headers",
-    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+    "lint": "eslint .",
     "preview": "vite preview",
     "server": "node server/index.js",
     "server:dev": "nodemon server/index.js",
