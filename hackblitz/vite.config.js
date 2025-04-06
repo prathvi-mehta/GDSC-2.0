@@ -12,4 +12,17 @@ export default defineConfig({
       },
     },
   },
+  build: {
+    // Improve compatibility with web servers
+    rollupOptions: {
+      output: {
+        // Ensure proper file extensions for different module types
+        entryFileNames: 'assets/[name]-[hash].js',
+        chunkFileNames: 'assets/[name]-[hash].js',
+        assetFileNames: 'assets/[name]-[hash].[ext]',
+      }
+    },
+    // Ensure proper MIME types are used
+    assetsInlineLimit: 0,
+  },
 })

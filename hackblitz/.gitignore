@@ -8,7 +8,6 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules/
-dist
 dist-ssr
 *.local
 
@@ -32,7 +31,7 @@ dist-ssr
 
 # Build files
 /build
-/dist
+
 
 # Debug logs
 npm-debug.log*
