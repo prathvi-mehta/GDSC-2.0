@@ -1,0 +1,7 @@
+{
+    "headers": {
+      "/assets/*": {
+        "Content-Type": "application/javascript"
+      }
+    }
+}
