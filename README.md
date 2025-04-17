@@ -1,7 +1,5 @@
 # E-Waste Analyzer
 
-![E-Waste Header](https://img.freepik.com/free-photo/electronic-devices-circuit-board-garbage-collection-recycling_23-2149043280.jpg)
-
 ## 🌟 Team Regeni
 
 - **Prithvi Mehta** (Team Leader)
